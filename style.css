@@ -1,7 +1,65 @@
 @import url('variables.css');
 
-*{
- padding: 0;
- margin: 0;
- box-sizing: border-box;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.main-header {
+  background-color: var(--color-bg-main);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 0 24px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0, auto;
+  height: 80px;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+  display: block;
+}
+
+.container-list {
+  display: flex;
+  list-style: none;
+  gap: 24px;
+}
+
+.nav-link {
+  text-decoration: none;
+  font-family: var(--font-titles);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text-main);
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--color-primary);
+}
+
+.nav-btn {
+  display: inline-block;
+  text-decoration: none;
+  background-color: var(--color-primary);
+  color: var(--color-bg-main);
+  font-family: var(--font-titles);
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.nav-btn:hover {
+  background-color: var(--color-dark-blue);
 }
