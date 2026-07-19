@@ -9,17 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const form = document.getElementById('subscription-form');
 
-  
-  console.log('JavaScript carregado');
-
-  console.log({
-    cep: cepInput,
-    logradouro: logradouroInput,
-    bairro: bairroInput,
-    localidade: localidadeInput,
-    uf: ufInput,
-    form: form
-  });
+  console.log('JavaScript carregado com sucesso!');
 
   
   cepInput.addEventListener('input', (event) => {
@@ -36,50 +26,44 @@ document.addEventListener('DOMContentLoaded', () => {
   cepInput.addEventListener('blur', async () => {
     const cep = cepInput.value.replace(/\D/g, '');
 
-    console.log('CEP:', cep);
-
     if (cep.length !== 8) {
-      console.log('CEP inválido');
+      console.log('CEP incompleto ou inválido');
       return;
     }
 
     loadingSpan.textContent = 'Buscando endereço...';
 
     try {
-      const response = await fetch(
-        `https://viacep.com.br/ws/${cep}/json/`
-      );
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
 
       if (!response.ok) {
-        throw new Error('Erro na requisição');
+        throw new Error('Erro na requisição da API');
       }
 
       const data = await response.json();
 
-      console.log('Dados recebidos:', data);
-
       if (data.erro) {
-        alert('CEP não encontrado.');
+        alert('CEP não encontrado. Por favor, verifique o número.');
+        loadingSpan.textContent = '';
         return;
       }
 
+      
       logradouroInput.value = data.logradouro || '';
       bairroInput.value = data.bairro || '';
       localidadeInput.value = data.localidade || '';
       ufInput.value = data.uf || '';
 
       loadingSpan.textContent = 'Endereço encontrado!';
-
+      
       
       document.getElementById('number').focus();
 
     } catch (error) {
       console.error('Erro ao buscar CEP:', error);
-
-      loadingSpan.textContent =
-        'Não foi possível buscar o endereço.';
-
+      loadingSpan.textContent = 'Não foi possível buscar o endereço.';
     } finally {
+      
       setTimeout(() => {
         loadingSpan.textContent = '';
       }, 3000);
@@ -91,7 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
     event.preventDefault();
 
     const userName = document.getElementById('name').value;
+    const userMessage = document.getElementById('message') ? document.getElementById('message').value : '';
 
+    
     const userAddress = [
       logradouroInput.value,
       document.getElementById('number').value,
@@ -102,35 +88,30 @@ document.addEventListener('DOMContentLoaded', () => {
       .filter(Boolean)
       .join(', ');
 
-    const selectedTicket =
-      document.getElementById('ticket-select');
+    const selectedTicket = document.getElementById('ticket-select');
+    const selectedTicketText = selectedTicket.options[selectedTicket.selectedIndex].text;
 
-    const selectedTicketText =
-      selectedTicket.options[
-        selectedTicket.selectedIndex
-      ].text;
+    const localEvento = 'Instituto Caldeira, Travessa São José, 455, Navegantes, Porto Alegre, RS';
 
-    const localEvento =
-      'Instituto Caldeira, Travessa São José, 455, Navegantes, Porto Alegre, RS';
+    
+    const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(userAddress)}&destination=${encodeURIComponent(localEvento)}&travelmode=driving`;
 
-    const googleMapsUrl =
-      'https://www.google.com/maps/dir/?api=1' +
-      `&origin=${encodeURIComponent(userAddress)}` +
-      `&destination=${encodeURIComponent(localEvento)}` +
-      '&travelmode=driving';
+    console.log('Endereço de origem gerado:', userAddress);
+    console.log('Mensagem do formulário:', userMessage);
+    console.log('URL de rota do Maps:', googleMapsUrl);
 
-    console.log('Endereço de origem:', userAddress);
-    console.log('URL do Maps:', googleMapsUrl);
-
+    
     alert(
       `Inscrição Confirmada, ${userName}!\n\n` +
-      ` Ingresso: ${selectedTicketText}`
+      ` Ingresso: ${selectedTicketText}\n\n` +
+      `Obrigado pelo seu contato! Estamos gerando sua rota para o evento...`
     );
 
+    
     window.open(googleMapsUrl, '_blank');
 
+    
     form.reset();
-
     logradouroInput.value = '';
     bairroInput.value = '';
     localidadeInput.value = '';
