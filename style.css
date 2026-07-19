@@ -73,7 +73,7 @@ body {
   font-size: 1.15rem;
   font-weight: 600;
   padding: 14px 28px;
-  border-radius: 8px;
+  border-radius: 10px;
   transition: background-color 0.2s ease;
   text-align: center;
 }
@@ -160,7 +160,7 @@ body {
   font-size: 1.2rem;
   font-weight: 700;
   padding: 18px 36px;
-  border-radius: 8px;
+  border-radius: 13px;
   transition: all 0.2s ease;
   text-align: center;
 }
